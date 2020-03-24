@@ -28,6 +28,20 @@ private:
 	arithClass *pArith = nullptr;
 	int m_clickCount=0;//鼠标连续点击的次数
 	int m_checkCount = 0;//检测次数
+
+	//相对于区域的点击位置
+	int m_mousX = 0;
+	int m_mousY = 0;
+	//区域的宽高
+	int m_width = 0;
+	int m_height = 0;
+	//重复点击时的区域
+	cv::Rect m_clickReg;
+	//重复点击区域边长
+	int m_regW = 10;
+	//重复点击的前次数
+	int m_dclick = 0;
+
 	std::vector<cv::Mat> listTemMap;
 	std::vector<cv::Mat> listTemCheck;
 

@@ -12,7 +12,7 @@ Qth_SystemCall::Qth_SystemCall(QObject *parent)
 	: QObject(parent)
 {
 	QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(on_Timer()));
-	timer.start(200);
+	
 }
 
 Qth_SystemCall::~Qth_SystemCall()
@@ -78,17 +78,44 @@ void Qth_SystemCall::on_Timer()
 			//是否需要点击
 			if (!m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).isNotClick)
 			{
-				int width = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.width*m_data->picScale;
-				int height = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.height*m_data->picScale;
 
-				int mousX = rand() % width;
-				int mousY = rand() % height;
+				if (m_clickCount==0)
+				{
+					m_width = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.width*m_data->picScale;
+					m_height = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.height*m_data->picScale;
+					
+					m_mousX = rand() % m_width;
+					m_mousY = rand() % m_height;
+					m_mousX = m_mousX + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.x*m_data->picScale;
+					m_mousY = m_mousY + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.y*m_data->picScale;
+					//重复点击的随机次数
+					m_dclick = 3 + rand() % 5;
+					//保存一个小矩形区域
+					m_clickReg = cv::Rect(m_mousX - m_regW / 2, m_mousY - m_regW / 2, m_regW, m_regW);
+				}
+				else if(m_clickCount>0&& m_clickCount< m_dclick)
+				{
+					
+					m_mousX = rand() % m_regW;
+					m_mousY = rand() % m_regW;
+					m_mousX += m_clickReg.x;
+					m_mousY += m_clickReg.y;
 
-				mousX = mousX + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.x*m_data->picScale;
-				mousY = mousY + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.y*m_data->picScale;
+				}
+				else if (m_clickCount>= m_dclick)
+				{
+					m_width = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.width*m_data->picScale;
+					m_height = m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.height*m_data->picScale;
+					m_mousX = rand() % m_width;
+					m_mousY = rand() % m_height;
+					m_mousX = m_mousX + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.x*m_data->picScale;
+					m_mousY = m_mousY + m_data->listProj.at(m_data->curProj).listReg.at(m_data->count).rectRoiClick.y*m_data->picScale;
+				}
+
+
 				//向所在位置发出点击信号
-				QWinControl::SendWinLClick(m_win, mousX, mousY);
-				emit sig_pos(mousX, mousY);
+				QWinControl::SendWinLClick(m_win, m_mousX, m_mousY);
+				emit sig_pos(m_mousX, m_mousY);
 				m_clickCount++;
 				if (m_clickCount>=10)
 				{
@@ -105,7 +132,7 @@ void Qth_SystemCall::on_Timer()
 		{
 			AutoState(0, 0, 0);
 			//点击完进入校验阶段可以等待一会
-			Sleep(rand() % 300);
+			Sleep(rand() % 400);
 			int ires = CheckPic(m_srcpic, m_win, m_data->curProj, m_data->count, 2);
 			if (ires == -1)
 			{
@@ -180,6 +207,7 @@ void Qth_SystemCall::processPic(HWND win)
 	m_checkCount = 0;
 	srand(time(0));
 	AutoState(1, 0, 0);
+	timer.start(200);
 	//SystemCall(srcpic, win, curProj);
 }
 
