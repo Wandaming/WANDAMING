@@ -11,17 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C40F9C07-0299-4CE4-AE74-D0B2B612D277}</ProjectGuid>
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
     <Keyword>QtVS_v301</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -67,12 +67,11 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PreprocessorDefinitions>DLLPARAM_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>M:\opencv\opencv\build\include;D:\program\yule\yys\AutoPlay\DllParam\x64\Release\uic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>M:\arithClass\include;M:\opencv\opencv\build\include;D:\program\yule\yys\SystemCall\DllParam\include;D:\program\yule\yys\SystemCall\DllWinControl\include;..\DllParam\x64\Release\uic;..\DllParam\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>M:\opencv\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world343d.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -84,36 +83,57 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PreprocessorDefinitions>DLLPARAM_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>M:\opencv\opencv\build\include;D:\program\yule\yys\AutoPlay\DllParam\x64\Release\uic;M:\arithClass\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\DllParam\include;..\DllParam\x64\Release\uic;M:\opencv\opencv\build\include;M:\arithClass\include;.\;D:\program\yule\yys\SystemCall\DllWinControl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>M:\opencv\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world343.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CdataStruct.cpp" />
-    <ClCompile Include="DllParam.cpp" />
-    <ClCompile Include="QParamTem.cpp" />
+    <ClCompile Include="arith_SystemCall.cpp" />
+    <ClCompile Include="arith_yuchuli.cpp" />
+    <ClCompile Include="SystemCall.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="QDialog_setting.cpp" />
+    <ClCompile Include="QMyLabel.cpp" />
+    <ClCompile Include="Qth_SystemCall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DllParam.h" />
-    <ClInclude Include="dllparam_global.h" />
-    <ClInclude Include="include\CdataStruct.h" />
-    <QtMoc Include="include\QParamTem.h" />
+    <QtMoc Include="SystemCall.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="QParamTem.ui" />
+    <QtUic Include="SystemCall.ui" />
+    <QtUic Include="QDialog_setting.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtRcc Include="SystemCall.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DllParam\DllParam.vcxproj">
+      <Project>{c40f9c07-0299-4ce4-ae74-d0b2b612d277}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DllWinControl\DllWinControl.vcxproj">
+      <Project>{0658bd43-bf49-4f63-8d48-1494e73aa1d4}</Project>
+    </ProjectReference>
     <ProjectReference Include="M:\arithClass\arithClass.vcxproj">
       <Project>{ccdddfe2-0bce-4493-97d1-f2963b950252}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QDialog_setting.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QMyLabel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arith_SystemCall.h" />
+    <ClInclude Include="arith_yuchuli.h" />
+    <QtMoc Include="Qth_SystemCall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
@@ -121,9 +141,4 @@
   </ImportGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" MocOptions="" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

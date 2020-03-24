@@ -1,9 +1,10 @@
 #include "include/CdataStruct.h"
 
-
+#include<sstream>
 
 CdataStruct::CdataStruct()
 {
+	listProj.swap(std::vector<SProj>());
 }
 
 
@@ -13,6 +14,7 @@ CdataStruct::~CdataStruct()
 bool CdataStruct::AddProj()
 {
 	SProj obj;
+	obj.name = "newProj";
 	listProj.push_back(obj);
 	return true;
 }
@@ -21,14 +23,18 @@ bool CdataStruct::RemovePorj(int _curProj)
 	if (_curProj < 0 || _curProj >= listProj.size())
 		return false;
 	listProj.erase(listProj.begin() + _curProj, listProj.begin() + _curProj + 1);
+	curProj--;
 	return true;
 }
-bool CdataStruct::DataRead()
+bool CdataStruct::DataRead(std::string path)
 {
 	//载入数据只需要一次载入
 	if (m_isRead)
 		return m_isRead;
-	m_fs.open("data_type.xml", cv::FileStorage::READ&& cv::FileStorage::FORMAT_XML);
+	std::stringstream ss_path;
+	ss_path << path << "/data_type.xml";
+	m_fs.open(ss_path.str(), cv::FileStorage::READ&& cv::FileStorage::FORMAT_XML);
+	ss_path.str("");
 	bool op;
 	op = m_fs.isOpened();
 	if (op)
@@ -45,16 +51,22 @@ bool CdataStruct::DataRead()
 
 
 		m_fs["curProj"] >> curProj;
+		m_fs["winName"] >> winName;
+		m_fs["randomTime"] >> randomTime;
+		m_fs["picScale"] >> picScale;
 		m_fs.release();
 		m_isRead = true;
 	}
 	return m_isRead;
 }
-bool CdataStruct::DataWrite()
+bool CdataStruct::DataWrite(std::string path)
 {
 	//参数保存
 	//int count= typeName.size();
-	m_fs.open("data_type.xml", cv::FileStorage::WRITE&& cv::FileStorage::FORMAT_XML);
+	std::stringstream ss_path;
+	ss_path << path << "/data_type.xml";
+	m_fs.open(ss_path.str(), cv::FileStorage::WRITE&& cv::FileStorage::FORMAT_XML);
+	ss_path.str("");
 	bool op;
 	op = m_fs.isOpened();
 	if (op)
@@ -72,7 +84,7 @@ bool CdataStruct::DataWrite()
 		//}
 		//m_fs << "]";
 
-		m_fs << "G1Type" << "[";
+		m_fs << "listProj" << "[";
 		auto iter_listG1Type = listProj.begin();
 		for (iter_listG1Type; iter_listG1Type != listProj.end(); iter_listG1Type++)
 		{
@@ -83,6 +95,9 @@ bool CdataStruct::DataWrite()
 		m_fs << "]";
 
 		m_fs << "curProj" << curProj;
+		m_fs << "winName" << winName;
+		m_fs << "randomTime" << randomTime;
+		m_fs << "picScale" << picScale;
 		m_fs.release();
 		m_isWrite = true;
 	}
